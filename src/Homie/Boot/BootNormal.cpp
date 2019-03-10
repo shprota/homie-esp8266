@@ -111,9 +111,6 @@ void BootNormal::loop() {
     ESP.restart();
   }
 
-  for (HomieNode* iNode : HomieNode::nodes) {
-    if (iNode->runLoopDisconnected ||Interface::get().getMqttClient().connected()) iNode->loop();
-  }
   if (_mqttReconnectTimer.check()) {
     _mqttConnect();
     return;
@@ -181,6 +178,10 @@ void BootNormal::loop() {
   }
 
   Interface::get().loopFunction();
+
+  for (HomieNode* iNode : HomieNode::nodes) {
+    iNode->loop();
+  }
 }
 
 void BootNormal::_prefixMqttTopic() {
