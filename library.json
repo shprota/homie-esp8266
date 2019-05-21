@@ -34,6 +34,15 @@
     },
     {
       "name": "ESP Async WebServer"
+    },
+    {
+      "name": "Ticker"
+    },
+    {
+      "name": "ESP8266HTTPClient"
+    },
+    {
+      "name": "DNSServer"
     }
   ],
   "export": {
