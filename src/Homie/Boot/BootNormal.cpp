@@ -97,9 +97,9 @@ void BootNormal::setup() {
 
   if (Interface::get().getConfig().get().mqtt.auth) Interface::get().getMqttClient().setCredentials(Interface::get().getConfig().get().mqtt.username, Interface::get().getConfig().get().mqtt.password);
 
-#if HOMIE_CONFIG
+// #if HOMIE_CONFIG
   ResetHandler::Attach();
-#endif
+// #endif
 
   Interface::get().getConfig().log();
 

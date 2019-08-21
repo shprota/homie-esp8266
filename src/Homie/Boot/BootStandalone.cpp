@@ -14,9 +14,9 @@ void BootStandalone::setup() {
 
   WiFi.mode(WIFI_OFF);
 
-#if HOMIE_CONFIG
+// #if HOMIE_CONFIG
   ResetHandler::Attach();
-#endif
+// #endif
 }
 
 void BootStandalone::loop() {

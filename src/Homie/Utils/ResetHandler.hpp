@@ -7,7 +7,7 @@
 #include "../../StreamingOperator.hpp"
 #include "../Datatypes/Interface.hpp"
 
-#if HOMIE_CONFIG
+// #if HOMIE_CONFIG
 namespace HomieInternals {
 class ResetHandler {
  public:
@@ -24,4 +24,4 @@ class ResetHandler {
   static void _handleReset();
 };
 }  // namespace HomieInternals
-#endif
+// #endif
