@@ -97,9 +97,9 @@ void BootNormal::setup() {
 
   if (Interface::get().getConfig().get().mqtt.auth) Interface::get().getMqttClient().setCredentials(Interface::get().getConfig().get().mqtt.username, Interface::get().getConfig().get().mqtt.password);
 
-#if HOMIE_CONFIG
+// #if HOMIE_CONFIG
   ResetHandler::Attach();
-#endif
+// #endif
 
   Interface::get().getConfig().log();
 
@@ -112,6 +112,9 @@ void BootNormal::setup() {
 
 void BootNormal::loop() {
   Boot::loop();
+  #if MQTT_SSL
+  Interface::get().getMqttClient().loop();
+  #endif
 
   if (_flaggedForReboot && Interface::get().reset.idle) {
     Interface::get().getLogger() << F("Device is idle") << endl;
@@ -129,7 +132,9 @@ void BootNormal::loop() {
     return;
   }
 
-  if (!Interface::get().getMqttClient().connected()) return;
+  if (!Interface::get().getMqttClient().connected()) {
+    return;
+  }
 
   // here, we are connected to the broker
 
@@ -714,14 +719,14 @@ void BootNormal::_advertise() {
       if (packetId != 0) _advertisementProgress.globalStep = AdvertisementProgress::GlobalStep::SUB_SET;
       break;
     case AdvertisementProgress::GlobalStep::SUB_SET:
-      packetId = Interface::get().getMqttClient().subscribe(_prefixMqttTopic(PSTR("/+/+/set")), 2);
+      packetId = Interface::get().getMqttClient().subscribe(_prefixMqttTopic(PSTR("/+/+/set")), 1);
       if (packetId != 0) _advertisementProgress.globalStep = AdvertisementProgress::GlobalStep::SUB_BROADCAST;
       break;
     case AdvertisementProgress::GlobalStep::SUB_BROADCAST:
     {
       String broadcast_topic(Interface::get().getConfig().get().mqtt.baseTopic);
       broadcast_topic.concat("$broadcast/+");
-      packetId = Interface::get().getMqttClient().subscribe(broadcast_topic.c_str(), 2);
+      packetId = Interface::get().getMqttClient().subscribe(broadcast_topic.c_str(), 1);
       if (packetId != 0) _advertisementProgress.globalStep = AdvertisementProgress::GlobalStep::PUB_READY;
       break;
     }
@@ -757,7 +762,7 @@ void BootNormal::_onMqttDisconnected(AsyncMqttClientDisconnectReason reason) {
     _statsTimer.deactivate();
     Interface::get().getLogger() << F("✖ MQTT disconnected, reason: ") << (int8_t)reason << endl;
     Interface::get().getLogger() << F("Triggering MQTT_DISCONNECTED event...") << endl;
-    Interface::get().event.type = HomieEventType::MQTT_DISCONNECTED;
+    Interface::get().event.type = HomieEventType::MQTT_IS_DISCONNECTED;
     Interface::get().event.mqttReason = reason;
     Interface::get().eventHandler(Interface::get().event);
 

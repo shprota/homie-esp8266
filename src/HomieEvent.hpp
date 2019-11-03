@@ -5,7 +5,11 @@
 #elif defined(ESP8266)
 #include <ESP8266WiFi.h>
 #endif // ESP32
+#if MQTT_SSL
+#include "Homie/Utils/PubSubWrapper.hpp"
+#else
 #include <AsyncMqttClient.h>
+#endif
 
 enum class HomieEventType : uint8_t {
   STANDALONE_MODE = 1,
@@ -19,7 +23,7 @@ enum class HomieEventType : uint8_t {
   WIFI_CONNECTED,
   WIFI_DISCONNECTED,
   MQTT_READY,
-  MQTT_DISCONNECTED,
+  MQTT_IS_DISCONNECTED,
   MQTT_PACKET_ACKNOWLEDGED,
   READY_TO_SLEEP,
   SENDING_STATISTICS

@@ -1,6 +1,10 @@
 #pragma once
 
+#ifdef MQTT_SSL
+#include "../Utils/PubSubWrapper.hpp"
+#else
 #include <AsyncMqttClient.h>
+#endif
 #include "../Logger.hpp"
 #include "../Blinker.hpp"
 #include "../Constants.hpp"
@@ -70,14 +74,23 @@ class InterfaceData {
   Logger& getLogger() { return *_logger; }
   Blinker& getBlinker() { return *_blinker; }
   Config& getConfig() { return *_config; }
-  AsyncMqttClient& getMqttClient() { return *_mqttClient; }
+  #ifdef MQTT_SSL
+    PubSubWrapper& getMqttClient() { return *_mqttClient; }
+  #else
+    AsyncMqttClient& getMqttClient() { return *_mqttClient; }  
+  #endif
+
   SendingPromise& getSendingPromise() { return *_sendingPromise; }
 
  private:
   Logger* _logger;
   Blinker* _blinker;
   Config* _config;
+  #ifdef MQTT_SSL
+  PubSubWrapper* _mqttClient;
+  #else
   AsyncMqttClient* _mqttClient;
+  #endif
   SendingPromise* _sendingPromise;
 };
 

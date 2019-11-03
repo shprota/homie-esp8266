@@ -1,6 +1,6 @@
 #include "ResetHandler.hpp"
 
-#if HOMIE_CONFIG
+// #if HOMIE_CONFIG
 using namespace HomieInternals;
 
 Ticker ResetHandler::_resetBTNTicker;
@@ -38,7 +38,7 @@ void ResetHandler::_handleReset() {
     Interface::get().getLogger() << F("Configuration erased") << endl;
 
     // Set boot mode
-    Interface::get().getConfig().setHomieBootModeOnNextBoot(HomieBootMode::CONFIGURATION);
+    // Interface::get().getConfig().setHomieBootModeOnNextBoot(HomieBootMode::CONFIGURATION);
 
     Interface::get().getLogger() << F("Triggering ABOUT_TO_RESET event...") << endl;
     Interface::get().event.type = HomieEventType::ABOUT_TO_RESET;
@@ -50,4 +50,4 @@ void ResetHandler::_handleReset() {
     _sentReset = true;
   }
 }
-#endif
+// #endif

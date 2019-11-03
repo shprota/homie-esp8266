@@ -35,7 +35,7 @@ void onHomieEvent(const HomieEvent& event) {
     case HomieEventType::MQTT_READY:
       Serial << "MQTT connected" << endl;
       break;
-    case HomieEventType::MQTT_DISCONNECTED:
+    case HomieEventType::MQTT_IS_DISCONNECTED:
       Serial << "MQTT disconnected, reason: " << (int8_t)event.mqttReason << endl;
       break;
     case HomieEventType::MQTT_PACKET_ACKNOWLEDGED:

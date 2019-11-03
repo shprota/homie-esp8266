@@ -71,7 +71,7 @@ void onHomieEvent(const HomieEvent& event) {
     case HomieEventType::MQTT_READY:
       // Do whatever you want when MQTT is connected in normal mode
       break;
-    case HomieEventType::MQTT_DISCONNECTED:
+    case HomieEventType::MQTT_IS_DISCONNECTED:
       // Do whatever you want when MQTT is disconnected in normal mode
 
       // You can use event.mqttReason

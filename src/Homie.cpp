@@ -344,10 +344,15 @@ HomieClass& HomieClass::disableResetTrigger() {
 const ConfigStruct& HomieClass::getConfiguration() {
   return Interface::get().getConfig().get();
 }
-
+#if MQTT_SSL
+PubSubWrapper& HomieClass::getMqttClient() {
+  return _mqttClient;
+}
+#else
 AsyncMqttClient& HomieClass::getMqttClient() {
   return _mqttClient;
 }
+#endif
 
 Logger& HomieClass::getLogger() {
   return _logger;

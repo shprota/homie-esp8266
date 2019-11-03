@@ -24,8 +24,11 @@
 #endif
 #endif // ESP32
 
-
+#ifdef MQTT_SSL
+#include "../Utils/PubSubWrapper.hpp"
+#else
 #include <AsyncMqttClient.h>
+#endif
 #include "../../HomieNode.hpp"
 #include "../../HomieRange.hpp"
 #include "../../StreamingOperator.hpp"

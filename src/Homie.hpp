@@ -1,8 +1,11 @@
 #pragma once
 
 #include "Arduino.h"
-
+#if MQTT_SSL
+#include "Homie/Utils/PubSubWrapper.hpp"
+#else
 #include "AsyncMqttClient.h"
+#endif
 #include "Homie/Datatypes/Interface.hpp"
 #include "Homie/Constants.hpp"
 #include "Homie/Limits.hpp"
@@ -62,7 +65,11 @@ class HomieClass {
   static bool isConfigured();
   static bool isConnected();
   static const ConfigStruct& getConfiguration();
+  #if MQTT_SSL
+  PubSubWrapper& getMqttClient();
+  #else
   AsyncMqttClient& getMqttClient();
+  #endif
   Logger& getLogger();
   #ifdef ESP32
   //FIXME implement on ESP32
@@ -85,7 +92,11 @@ class HomieClass {
   Logger _logger;
   Blinker _blinker;
   Config _config;
+  #if MQTT_SSL
+  PubSubWrapper _mqttClient;
+  #else
   AsyncMqttClient _mqttClient;
+  #endif
 
   void _checkBeforeSetup(const __FlashStringHelper* functionName) const;
 
